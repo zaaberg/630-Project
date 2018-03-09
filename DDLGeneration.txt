@@ -1,0 +1,25 @@
+CREATE TABLE all_entities
+(
+Id	varchar2(9)	Not Null,
+Name	varchar2(20)	Not Null
+);
+
+CREATE TABLE entity_atributes
+(
+Id	varchar2(9)	Not Null,
+Key_Status	varchar(5)	Not Null,
+EntityId	varchar2(9)	Not Null,
+Name		varchar2(20)	Not Null,
+Composite	varchar2(20)	
+);
+
+CREATE TABLE relationship
+(
+Id	varchar2(9)	Not Null,
+Start_Cardinality	varchar2(10)	,	[is cardinality required and therefore not null]
+StartEntityID		varchar2(9)	Not Null,
+End_Cardinality	varchar2(10)	,
+EndEntityID		Varchar2(9)	Not Null,
+ActionName		varchar2(20)	Not Null
+);
+
