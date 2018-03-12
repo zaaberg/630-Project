@@ -1,3 +1,10 @@
+SEIS630 - Monday
+Project: DDL Generation
+Zach Aaberg
+Alex Graves
+Dan Ward
+
+
 CREATE TABLE ALL_ENTITIES 
 (
   ID VARCHAR2(9 BYTE) NOT NULL 
