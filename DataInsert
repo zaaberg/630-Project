@@ -1,1 +1,11 @@
 
+REM Inserting into All_Entities
+Insert into DAN.ALL_ENTITIES (ID,NAME) values ('1','Employee');
+Insert into DAN.ALL_ENTITIES (ID,NAME) values ('2','Associate');
+Insert into DAN.ALL_ENTITIES (ID,NAME) values ('3','Contractor');
+Insert into DAN.ALL_ENTITIES (ID,NAME) values ('4','Promotion');
+Insert into DAN.ALL_ENTITIES (ID,NAME) values ('5','TempHourly');
+Insert into DAN.ALL_ENTITIES (ID,NAME) values ('6','Display');
+Insert into DAN.ALL_ENTITIES (ID,NAME) values ('7','Store');
+Insert into DAN.ALL_ENTITIES (ID,NAME) values ('8','Region');
+Insert into DAN.ALL_ENTITIES (ID,NAME) values ('9','Product');
