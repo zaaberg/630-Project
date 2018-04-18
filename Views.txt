@@ -1,0 +1,27 @@
+CREATE VIEW ALL_ENTS
+AS SELECT AE.Name
+    
+FROM All_Entities AE Order By Name;
+
+
+CREATE VIEW ALL_ATTS
+AS SELECT EA.NAME
+    
+FROM Entity_Attributes EA order by Name;
+
+
+CREATE VIEW ALL_KEYS
+AS SELECT EA.Name
+FROM Entity_Attributes EA 
+Where EA.KEY_STATUS = 'TRUE'
+Union
+Select RA.ATTRIBUTE_NAME Name
+From Relationship_Attributes RA
+Where RA.KEY_STATUS = 'TRUE';
+
+
+CREATE VIEW ALL_RELS
+AS SELECT R.ACTIONNAME
+    
+FROM Relationship R Order by R.ACTIONNAME;
+
