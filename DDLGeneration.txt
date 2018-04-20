@@ -57,7 +57,8 @@ CREATE TABLE ENTITY_ATTRIBUTES
     composite_attribute   VARCHAR2(20 BYTE),
     composite_parent_id   VARCHAR2(9 BYTE),
     derived_attribute     VARCHAR2(9 BYTE),
-    derived_parent_id     VARCHAR2(9 BYTE)
+    derived_parent_id     VARCHAR2(9 BYTE),
+    data_type		  VARCHAR2(20 BYTE)
 , CONSTRAINT ENTITY_ATTRIBUTES_PK PRIMARY KEY 
   (
     ID 
