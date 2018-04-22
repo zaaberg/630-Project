@@ -1,4 +1,3 @@
-
 REM Inserting into All_Entities
 Insert into ALL_ENTITIES (ID,NAME) values ('01','Employee');
 Insert into ALL_ENTITIES (ID,NAME) values ('02','Associate');
