@@ -4,7 +4,7 @@ SELECT * FROM All_Ents;
 
 REM 2. Print the name of all attributes in the picture.
 SELECT * FROM ALL_ATTS;
-
+ 
 REM 3. Print the name of all relationships and the two entities they relate in the picture.
 REM 4. Print the name of all relationships and the two entities they relate and the cardinality for each side of the relationship in the picture.
 REM 5. Print the name of all relationships that have a cardinality of 1-to-1 in the picture.
