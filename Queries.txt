@@ -1,0 +1,30 @@
+REM Create These Queries - limited to the items IN THE PICTURE ONLY
+REM 1. Print the name of all entities in the picture.
+SELECT * FROM All_Ents;
+
+REM 2. Print the name of all attributes in the picture.
+SELECT * FROM ALL_ATTS;
+
+REM 3. Print the name of all relationships and the two entities they relate in the picture.
+REM 4. Print the name of all relationships and the two entities they relate and the cardinality for each side of the relationship in the picture.
+REM 5. Print the name of all relationships that have a cardinality of 1-to-1 in the picture.
+REM 6. Print the name of all relationships that have a cardinality of 1-to-M in the picture.
+REM 7. Print the name of all relationships that have a cardinality of M-to-N in the picture.
+REM 8. Print the name of all relationships that have attribute(s) as well as the name(s) of the attribute(s) in the picture.
+REM 9. Print the name of all relationships that do not have attribute(s) in the picture.
+REM 10. Print the name of all entities that have a super-type and the name of the super-type entity in the picture.
+REM 11. Print the name of all entities that have sub-type(s) and the name of the sub-type entities in the picture.
+REM 12. Print the name of each entity that has a Pkey including the name(s) of the attribute(s) that form the Pkey in the picture.
+REM 13. Print the name of each entity that does not have a Pkey in the picture.
+REM 14. Print the names of all attributes in the picture and the attribute data types.
+REM 15. Print the names of all derived attributes and the attributes they derive from in the picture.
+REM 16. Print the names of all attributes in the picture that have a date data type.
+REM 17. Print entity Employee's attributes names in the picture.
+REM 18. Print relationship Builds attributes names in the picture.
+REM 19. Print the names of all entities that are directly related to entity TempHourly (directly means via only one relationship) in the picture.
+REM 20. Print the names of all entities that are indirectly related to the entity TempHourly (related via two relationships) in the picture.
+REM 21. Print the names of attributes for entities Store and Region (just the attribute names) in the picture.
+REM 22. Print the names of all entities that are participating in any relationship that Product participates in in the picture.
+REM 23. Print the name of all sub-types of entity Employee in the picture.
+REM 24. Print the name of all entities that have exactly three attributes in the picture.
+REM 25. Print the name of all composite attributes and the attributes they contain in the picture.
