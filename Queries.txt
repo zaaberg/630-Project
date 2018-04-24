@@ -47,9 +47,21 @@ WHERE START_CARDINALITY = 'Many'
 AND END_CARDINALITY = 'N';
 
 REM 8. Print the name of all relationships that have attribute(s) as well as the name(s) of the attribute(s) in the picture.
+SELECT 
+R.ACTION, 
+RA.ATTRIBUTE_NAME
+FROM RELATIONSHIP R
+JOIN RELATIONSHIP_ATTRIBUTES RA
+ON R.ID = RA.RELATIONSHIP;
 
 
 REM 9. Print the name of all relationships that do not have attribute(s) in the picture.
+SELECT
+R.ACTION
+FROM RELATIONSHIP R
+FULL OUTER JOIN RELATIONSHIP_ATTRIBUTES RA
+ON R.ID = RA.RELATIONSHIP
+WHERE RA.ATTRIBUTE_NAME IS NULL;
 
 
 REM 10. Print the name of all entities that have a super-type and the name of the super-type entity in the picture.
