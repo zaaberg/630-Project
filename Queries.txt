@@ -72,10 +72,19 @@ WHERE RA.ATTRIBUTE_NAME IS NULL;
 
 
 REM 10. Print the name of all entities that have a super-type and the name of the super-type entity in the picture.
+WITH START_ENT AS(SELECT AE.ID, AE.NAME, SR.STARTENTITYID STARTING FROM SPECIALIZED_RELATIONSHIP SR, ALL_ENTITIES AE WHERE SR.STARTENTITYID=AE.ID),
+END_ENT AS (SELECT AE.ID, AE.NAME, SR.ENDENTITYID ENDING FROM SPECIALIZED_RELATIONSHIP SR, ALL_ENTITIES AE WHERE SR.ENDENTITYID=AE.ID)
+SELECT DISTINCT e.Name EntityName, s.Name SuperType FROM SPECIALIZED_RELATIONSHIP SR 
+JOIN START_ENT s ON SR.STARTENTITYID=s.ID 
+JOIN END_ENT e ON SR.ENDENTITYID=e.ID ORDER BY EntityName;
 
 
 REM 11. Print the name of all entities that have sub-type(s) and the name of the sub-type entities in the picture.
-
+WITH START_ENT AS(SELECT AE.ID, AE.NAME, SR.STARTENTITYID STARTING FROM SPECIALIZED_RELATIONSHIP SR, ALL_ENTITIES AE WHERE SR.STARTENTITYID=AE.ID),
+END_ENT AS (SELECT AE.ID, AE.NAME, SR.ENDENTITYID ENDING FROM SPECIALIZED_RELATIONSHIP SR, ALL_ENTITIES AE WHERE SR.ENDENTITYID=AE.ID)
+SELECT DISTINCT s.Name EntityName, e.Name SubType FROM SPECIALIZED_RELATIONSHIP SR 
+JOIN START_ENT s ON SR.STARTENTITYID=s.ID 
+JOIN END_ENT e ON SR.ENDENTITYID=e.ID ORDER BY EntityName;
 
 REM 12. Print the name of each entity that has a Pkey including the name(s) of the attribute(s) that form the Pkey in the picture.
 SELECT DISTINCT EA.Entity, listagg(EA.Attribute_Name, ',') within group (order by EA.ENTITY) as Keys
@@ -95,7 +104,9 @@ FROM ENTITY_ATTRIBUTES EA
 ORDER BY EA.ENTITY;
 
 REM 15. Print the names of all derived attributes and the attributes they derive from in the picture.
-
+SELECT EA1.ATTRIBUTE_NAME DerivedAttribute, EA.ATTRIBUTE_NAME DerivedFrom 
+FROM ENTITY_ATTRIBUTES EA, ENTITY_ATTRIBUTES EA1 
+WHERE EA.ID=EA1.DERIVED_PARENT_ID;
 
 REM 16. Print the names of all attributes in the picture that have a date data type.
 SELECT EA.ATTRIBUTE_NAME
@@ -138,7 +149,9 @@ WHERE R.STARTENTITYID in (SELECT AE.ID FROM ALL_ENTITIES AE WHERE AE.NAME = 'Pro
 
 
 REM 23. Print the name of all sub-types of entity Employee in the picture.
-
+SELECT AE.NAME 
+FROM All_Entities AE, Specialized_Relationship SR
+WHERE AE.ID = SR.ENDENTITYID AND SR.STARTENTITYID IN (SELECT AE.ID FROM All_Entities AE WHERE AE.Name = 'Employee');
 
 REM 24. Print the name of all entities that have exactly three attributes in the picture.
 SELECT *
@@ -152,6 +165,11 @@ ON E.ID = A.ENTITYID
 GROUP BY E.NAME)
 WHERE NUMBER_ATTRIBUTES = '3';
 
-
 REM 25. Print the name of all composite attributes and the attributes they contain in the picture.
+REM Comma delimited list
+SELECT EA.ATTRIBUTE_NAME CompositeAttribute, listagg(EA1.Attribute_Name, ',') within group (order by EA1.Attribute_Name) as ContainedAttributes 
+FROM ENTITY_ATTRIBUTES EA, ENTITY_ATTRIBUTES EA1 WHERE EA.ID=EA1.COMPOSITE_PARENT_ID
+GROUP BY EA.ATTRIBUTE_NAME;
 
+REM One row for each contained attribute
+SELECT EA.ATTRIBUTE_NAME CompositeAttribute, EA1.ATTRIBUTE_NAME ContainedAttributes FROM ENTITY_ATTRIBUTES EA, ENTITY_ATTRIBUTES EA1 WHERE EA.ID=EA1.COMPOSITE_PARENT_ID;
