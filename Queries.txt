@@ -78,24 +78,40 @@ REM 11. Print the name of all entities that have sub-type(s) and the name of the
 
 
 REM 12. Print the name of each entity that has a Pkey including the name(s) of the attribute(s) that form the Pkey in the picture.
-
+SELECT DISTINCT EA.Entity, listagg(EA.Attribute_Name, ',') within group (order by EA.ENTITY) as Keys
+FROM entity_attributes EA WHERE Key_Status = 'TRUE'
+Group by EA.Entity;
 
 REM 13. Print the name of each entity that does not have a Pkey in the picture.
+SELECT DISTINCT EA.Entity
+FROM entity_attributes EA 
+WHERE EA.ENTITYID NOT IN 
+(SELECT DISTINCT EA.ENTITYID FROM ENTITY_ATTRIBUTES EA WHERE Key_Status = 'TRUE');
 
 
 REM 14. Print the names of all attributes in the picture and the attribute data types.
-
+SELECT EA.ATTRIBUTE_NAME, EA.DATA_TYPE
+FROM ENTITY_ATTRIBUTES EA 
+ORDER BY EA.ENTITY;
 
 REM 15. Print the names of all derived attributes and the attributes they derive from in the picture.
 
 
 REM 16. Print the names of all attributes in the picture that have a date data type.
-
+SELECT EA.ATTRIBUTE_NAME
+FROM ENTITY_ATTRIBUTES EA 
+WHERE EA.DATA_TYPE = 'date';
 
 REM 17. Print entity Employee's attributes names in the picture.
+SELECT EA.ATTRIBUTE_NAME
+FROM ENTITY_ATTRIBUTES EA 
+WHERE EA.ENTITY = 'Employee';
 
 
 REM 18. Print relationship Builds attributes names in the picture.
+SELECT RA.ATTRIBUTE_NAME
+FROM RELATIONSHIP_ATTRIBUTES RA, RELATIONSHIP R
+WHERE RA.RelationshipID = R.ID AND R.Action = 'Builds';
 
 
 REM 19. Print the names of all entities that are directly related to entity TempHourly (directly means via only one relationship) in the picture.
@@ -105,9 +121,20 @@ REM 20. Print the names of all entities that are indirectly related to the entit
 
 
 REM 21. Print the names of attributes for entities Store and Region (just the attribute names) in the picture.
-
+SELECT EA.ATTRIBUTE_NAME
+FROM ENTITY_ATTRIBUTES EA 
+WHERE EA.ENTITY IN ('Store','Region');
 
 REM 22. Print the names of all entities that are participating in any relationship that Product participates in in the picture.
+SELECT AE.NAME FROM ALL_ENTITIES AE 
+WHERE AE.ID IN (
+SELECT R.startentityid EntityID
+FROM RELATIONSHIP R
+WHERE R.ENDENTITYID in (SELECT AE.ID FROM ALL_ENTITIES AE WHERE AE.NAME = 'Product')
+UNION
+SELECT R.endentityid EntityID
+FROM RELATIONSHIP R
+WHERE R.STARTENTITYID in (SELECT AE.ID FROM ALL_ENTITIES AE WHERE AE.NAME = 'Product'));
 
 
 REM 23. Print the name of all sub-types of entity Employee in the picture.
