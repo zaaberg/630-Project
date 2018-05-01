@@ -115,7 +115,11 @@ WHERE RA.RelationshipID = R.ID AND R.Action = 'Builds';
 
 
 REM 19. Print the names of all entities that are directly related to entity TempHourly (directly means via only one relationship) in the picture.
-
+SELECT START_ENTITY RELATED
+FROM RELENT WHERE STOP_ENTITY = 'TempHourly'
+UNION
+SELECT STOP_ENTITY RELATED
+FROM RELENT WHERE START_ENTITY = 'TempHourly';
 
 REM 20. Print the names of all entities that are indirectly related to the entity TempHourly (related via two relationships) in the picture.
 
@@ -143,22 +147,24 @@ FROM All_Entities AE, Specialized_Relationship SR
 WHERE AE.ID = SR.ENDENTITYID AND SR.STARTENTITYID IN (SELECT AE.ID FROM All_Entities AE WHERE AE.Name = 'Employee');
 
 REM 24. Print the name of all entities that have exactly three attributes in the picture.
-SELECT *
-FROM 
-(SELECT
-COUNT(A.ID) NUMBER_ATTRIBUTES,
+SELECT * FROM 
+(SELECT COUNT(A.ID) NUMBER_ATTRIBUTES,
 E.NAME
 FROM ALL_ENTITIES E
-JOIN ENTITY_ATTRIBUTES A
-ON E.ID = A.ENTITYID
+JOIN ENTITY_ATTRIBUTES A ON E.ID = A.ENTITYID
 GROUP BY E.NAME)
 WHERE NUMBER_ATTRIBUTES = '3';
 
 REM 25. Print the name of all composite attributes and the attributes they contain in the picture.
-REM Comma delimited list
 SELECT EA.ATTRIBUTE_NAME CompositeAttribute, listagg(EA1.Attribute_Name, ',') within group (order by EA1.Attribute_Name) as ContainedAttributes 
 FROM ENTITY_ATTRIBUTES EA, ENTITY_ATTRIBUTES EA1 WHERE EA.ID=EA1.COMPOSITE_PARENT_ID
 GROUP BY EA.ATTRIBUTE_NAME;
 
-REM One row for each contained attribute
-SELECT EA.ATTRIBUTE_NAME CompositeAttribute, EA1.ATTRIBUTE_NAME ContainedAttributes FROM ENTITY_ATTRIBUTES EA, ENTITY_ATTRIBUTES EA1 WHERE EA.ID=EA1.COMPOSITE_PARENT_ID;
+REM 26. Print label ‘Parent’ followed by the name of the parent entity and the label ‘Child’ followed by the name of the child entities for each disjoint type-sub-type relationship in the picture.
+WITH START_ENT AS(SELECT AE.ID, AE.NAME, SR.STARTENTITYID STARTING FROM SPECIALIZED_RELATIONSHIP SR, ALL_ENTITIES AE WHERE SR.STARTENTITYID=AE.ID),
+END_ENT AS (SELECT AE.ID, AE.NAME, SR.ENDENTITYID ENDING FROM SPECIALIZED_RELATIONSHIP SR, ALL_ENTITIES AE WHERE SR.ENDENTITYID=AE.ID)
+SELECT DISTINCT CONCAT('PARENT: ' , s.Name) SuperType, CONCAT('CHILD: ' , e.Name) EntityName FROM SPECIALIZED_RELATIONSHIP SR 
+JOIN START_ENT s ON SR.STARTENTITYID=s.ID 
+JOIN END_ENT e ON SR.ENDENTITYID=e.ID ORDER BY EntityName;
+
+REM 27.Print the name of each table and the columns within that table-by printing the table name once followed by each column within that table on a separate line. 
