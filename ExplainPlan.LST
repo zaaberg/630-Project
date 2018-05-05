@@ -1,0 +1,81 @@
+SQL> @C:\file_cabinet\school\630\SupportFiles_\Explain-Plan\utlxplan.sql
+
+Table created.
+
+SQL> analyze table ALL_ENTITIES compute statistics;
+
+Table analyzed.
+
+SQL> analyze table ENTITY_ATTRIBUTES compute statistics;
+
+Table analyzed.
+
+SQL> explain plan for SELECT * FROM (SELECT COUNT(A.ID) NUMBER_ATTRIBUTES,E.NAME FROM ALL_ENTITIES E JOIN ENTITY_ATTRIBUTES A ON E.ID = A.ENTITYID GROUP BY E.NAME) WHERE NUMBER_ATTRIBUTES = '3';
+
+Explained.
+
+SQL> @C:\file_cabinet\school\630\SupportFiles_\Explain-Plan\utlxpls.sql;
+
+PLAN_TABLE_OUTPUT                                                               
+--------------------------------------------------------------------------------
+Plan hash value: 3849952545                                                     
+                                                                                
+--------------------------------------------------------------------------------
+--------------------                                                            
+                                                                                
+| Id  | Operation                      | Name              | Rows  | Bytes | Cos
+t (%CPU)| Time     |                                                            
+                                                                                
+--------------------------------------------------------------------------------
+--------------------                                                            
+                                                                                
+
+PLAN_TABLE_OUTPUT                                                               
+--------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT               |                   |     1 |    12 |    
+ 7  (29)| 00:00:01 |                                                            
+                                                                                
+|*  1 |  FILTER                        |                   |       |       |    
+        |          |                                                            
+                                                                                
+|   2 |   HASH GROUP BY                |                   |     1 |    12 |    
+ 7  (29)| 00:00:01 |                                                            
+                                                                                
+|   3 |    MERGE JOIN                  |                   |    33 |   396 |    
+ 6  (17)| 00:00:01 |                                                            
+
+PLAN_TABLE_OUTPUT                                                               
+--------------------------------------------------------------------------------
+                                                                                
+|   4 |     TABLE ACCESS BY INDEX ROWID| ALL_ENTITIES      |     9 |    90 |    
+ 2   (0)| 00:00:01 |                                                            
+                                                                                
+|   5 |      INDEX FULL SCAN           | TABLE1_PK         |     9 |       |    
+ 1   (0)| 00:00:01 |                                                            
+                                                                                
+|*  6 |     SORT JOIN                  |                   |    33 |    66 |    
+ 4  (25)| 00:00:01 |                                                            
+                                                                                
+|   7 |      TABLE ACCESS FULL         | ENTITY_ATTRIBUTES |    33 |    66 |    
+
+PLAN_TABLE_OUTPUT                                                               
+--------------------------------------------------------------------------------
+ 3   (0)| 00:00:01 |                                                            
+                                                                                
+--------------------------------------------------------------------------------
+--------------------                                                            
+                                                                                
+                                                                                
+Predicate Information (identified by operation id):                             
+---------------------------------------------------                             
+                                                                                
+   1 - filter(COUNT(*)=3)                                                       
+   6 - access("E"."ID"="A"."ENTITYID")                                          
+
+PLAN_TABLE_OUTPUT                                                               
+--------------------------------------------------------------------------------
+       filter("E"."ID"="A"."ENTITYID")                                          
+
+21 rows selected.
+
+SQL> spool off
