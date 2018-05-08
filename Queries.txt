@@ -122,6 +122,23 @@ SELECT STOP_ENTITY RELATED
 FROM RELENT WHERE START_ENTITY = 'TempHourly';
 
 REM 20. Print the names of all entities that are indirectly related to the entity TempHourly (related via two relationships) in the picture.
+SELECT DISTINCT START_ENTITY SECOND_GEN
+FROM RELENT
+WHERE STOP_ENTITY IN (
+SELECT START_ENTITY FIRST_GEN 
+FROM RELENT WHERE STOP_ENTITY = 'TempHourly' 
+UNION 
+SELECT STOP_ENTITY FIRST_GEN FROM RELENT WHERE START_ENTITY = 'TempHourly')
+AND START_ENTITY != 'TempHourly'
+UNION 
+SELECT DISTINCT STOP_ENTITY SECOND_GEN
+FROM RELENT
+WHERE START_ENTITY IN (
+SELECT START_ENTITY FIRST_GEN 
+FROM RELENT WHERE STOP_ENTITY = 'TempHourly' 
+UNION 
+SELECT STOP_ENTITY FIRST_GEN FROM RELENT WHERE START_ENTITY = 'TempHourly')
+AND STOP_ENTITY != 'TempHourly';
 
 
 REM 21. Print the names of attributes for entities Store and Region (just the attribute names) in the picture.
@@ -168,3 +185,8 @@ JOIN START_ENT s ON SR.STARTENTITYID=s.ID
 JOIN END_ENT e ON SR.ENDENTITYID=e.ID ORDER BY EntityName;
 
 REM 27.Print the name of each table and the columns within that table-by printing the table name once followed by each column within that table on a separate line. 
+SELECT TABLE_NAME, COLUMN_NAME
+FROM USER_TAB_COLUMNS
+WHERE TABLE_NAME IN (SELECT table_name
+FROM user_tables)
+ORDER BY TABLE_NAME;
